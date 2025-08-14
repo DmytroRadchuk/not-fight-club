@@ -4,9 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Not-fight-club</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Forum&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+    <div class="wrapper">
+        <section class="register">
+            <div class="container">
+                <h1 class="register-title">Welcome to the Not-Fight-Club</h1>
+                <form id="registerForm" action="#" class="register-form">
+                    <label class="register-label" for="registerFormInput">What is your name hero ?</label>
+                    <input class="register-input" id="registerFormInput" type="text" placeholder="Enter your name" required>
+                    <button class="register-button" id="joinGame" type="submit">Join</button>
+                </form>
+            </div>
+        </section>
+        <section class="home">
+            <div class="container">
+                <div class="home-header">
+                    <h1 class="home-title">Welcome to the Not-Fight-Club <span id="playerName">Dima</span>!</h1>
+                    <button id="logoutButton">Logout</button>
+                </div>
+                
+            </div>
+        </section>
+    </div>
     
     <script src="./app.js"></script>
 </body>
