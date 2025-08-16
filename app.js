@@ -10,7 +10,18 @@ const startGameButton = document.getElementById('startGame');
 const enemyCard = document.querySelector('.home-enemy-card');
 const homeGameMenu = document.querySelector('.home-game-menu');
 const homeGamePlayground = document.querySelector('.home-game-playground');
-const roundButton = document.querySelector('.home-game-attack-button');
+const homeGameResultPanel = document.querySelector('.home-game-result-panel');
+const roundButton = document.querySelector('.home-game-start-button');
+const winScoreElement = document.getElementById('winScore');
+const loseScoreElement = document.getElementById('loseScore');
+const homeGameAttackButton = document.querySelector('.home-game-attack-buttons');
+let resultTextElement = document.getElementById('resultText');
+
+resultTextElement.textContent = '!';
+
+let winScore = 0;
+let loseScore = 0;
+
 
 
 // writing starting status to local storage
@@ -24,21 +35,68 @@ if (!myStorage.getItem('gameStatus')) {
 const hero = {
     name: myStorage.getItem('playerName'),
     class: 'warrior',
+    maxHealth: 100,
     health: 100,
     attack: 20,
     avatar: './img/heroes/warrior.webp',
     defenseZone: []
 }
 
-const enemy = {
-    name: 'Spider',
-    class: 'monster',
-    health: 80,
-    attack: 15,
-    avatar: './img/enemy/spyder.webp',
-    defenseZone: ['head', 'body'],
-    attackZones: ['head']
-}
+const enemy = [
+    {
+        name: 'Spider',
+        class: 'monster',
+        maxHealth: 80,
+        health: 80,
+        attack: 15,
+        avatar: './img/enemy/spyder.webp',
+        defenseZone: ['head', 'body'],
+        attackZones: ['head']
+    },
+    {
+        name: 'Goblin',
+        class: 'monster',
+        maxHealth: 60,
+        health: 60,
+        attack: 30,
+        avatar: './img/enemy/goblin.png',
+        defenseZone: ['head', 'body'],
+        attackZones: ['head']
+    },
+    {
+        name: 'Ent',
+        class: 'monster',
+        maxHealth: 140,
+        health: 140,
+        attack: 10,
+        avatar: './img/enemy/ent.png',
+        defenseZone: ['head', 'body'],
+        attackZones: ['head']
+    },
+        {
+        name: 'Slime',
+        class: 'monster',
+        maxHealth: 80,
+        health: 80,
+        attack: 15,
+        avatar: './img/enemy/slime.png',
+        defenseZone: ['head', 'body'],
+        attackZones: ['head']
+    },
+        {
+        name: 'Dragon',
+        class: 'monster',
+        maxHealth: 150,
+        health: 150,
+        attack: 15,
+        avatar: './img/enemy/dragon.webp',
+        defenseZone: ['head', 'body'],
+        attackZones: ['head']
+    }
+]
+
+// rendom enemy
+let numberForRendomEnemy = 1;
 
 function renderGameWindow(status){
     if (status === 'registering') {
@@ -79,69 +137,104 @@ function renderEnemy(enemyData) {
     `
 }
 
+function getRandomElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function getTwoRandomElements(arr) {
+  let copy = [...arr]; 
+  let first = getRandomElement(copy);
+  copy.splice(copy.indexOf(first), 1);
+  let second = getRandomElement(copy);
+  return [first, second];
+}
+
+function enemyTurn(enemy) {
+    enemy.currentAttack = getRandomElement(['head', 'neck', 'body', 'belly', 'legs']);
+    enemy.defenseZone = getTwoRandomElements(['head', 'neck', 'body', 'belly', 'legs']);
+
+    console.log(`Враг атакует: ${enemy.currentAttack}`);
+    console.log(`Враг защищается: ${enemy.defenseZone}`);
+}
+
 function startGame() {
     enemyCard.classList.add('visible');
     homeGameMenu.classList.add('unvisible');
+    homeGameResultPanel.classList.add('unvisible');
     homeGamePlayground.classList.add('visible');
-    renderEnemy(enemy);
+    numberForRendomEnemy = Math.floor(Math.random() * enemy.length);
+    renderEnemy(enemy[numberForRendomEnemy]);
+
+    hero.health = hero.maxHealth;
+    hero.defenseZone = []; 
+
+    enemy[numberForRendomEnemy].health = enemy[numberForRendomEnemy].maxHealth;
+    // enemy[numberForRendomEnemy].defenseZone = [];
 }
 
-// startGame();
 function endGame() {
     enemyCard.classList.remove('visible');
     homeGameMenu.classList.remove('unvisible');
+    homeGameResultPanel.classList.remove('unvisible');
     homeGamePlayground.classList.remove('visible');
+    hero.health = hero.maxHealth;
+    hero.defenseZone = [];
+    enemy[numberForRendomEnemy].health = enemy[numberForRendomEnemy].maxHealth;
+    renderHero(hero); 
 }
 
-function gameRound(hero, enemy){
+function gameRound(hero, enemy) {
     const heroAttack = document.querySelectorAll('input[name="attack"]');
     const heroDefense = document.querySelectorAll('input[name="defense"]');
+
     let heroAttackValue = '';
-    let heroPunch = true;
-    let enemyPunch = true;
+    hero.defenseZone = []; 
 
     heroAttack.forEach(attackButton =>{
-        if(attackButton.checked){
+        if (attackButton.checked) {
             heroAttackValue = attackButton.value;
         }
-    })
+    });
 
     heroDefense.forEach(defenseButton =>{
-        if(defenseButton.checked){
+        if (defenseButton.checked) {
             hero.defenseZone.push(defenseButton.value);
         }
-    })
-
-    enemy.defenseZone.forEach(defenseZone => {
-        console.log(defenseZone);
-        if (heroAttackValue === defenseZone) {
-            heroPunch = false;
-        }
     });
 
-    hero.defenseZone.forEach(defenseZone => {
-        enemy.attackZones.forEach(attackZone => {
-            if (defenseZone === attackZone) {
-                enemyPunch = false;
-            }
-        });
-    });
+    enemyTurn(enemy);
 
-    if (heroPunch) {
+    if (!enemy.defenseZone.includes(heroAttackValue)) {
         enemy.health -= hero.attack;
+        console.log(`Герой попал! -${hero.attack} HP врагу`);
+    } else {
+        console.log("Враг защитился от удара героя!");
     }
 
-    if (enemyPunch) {
+    if (!hero.defenseZone.includes(enemy.currentAttack)) {
         hero.health -= enemy.attack;
+        console.log(`Враг попал! -${enemy.attack} HP герою`);
+    } else {
+        console.log("Герой защитился от удара врага!");
     }
+
     renderEnemy(enemy);
     renderHero(hero);
 
-    if(hero.health <= 0 || enemy.health <= 0) {
-        endGame();
+    if (hero.health <= 0) {
+        endGame()
+        loseScore++;
+        loseScoreElement.textContent = loseScore;
+        resultTextElement.textContent = ' but you lose';
+        alert("Вы проиграли! 🩸");
+    } else if (enemy.health <= 0) {
+        endGame()
+        winScore++;
+        resultTextElement.textContent = ' and you win';
+        winScoreElement.textContent = winScore;
+        alert(`Вы победили врага: ${enemy.name}! 🎉`);
     }
 }
-
 
 renderGameWindow(myStorage.getItem('gameStatus'));
 
@@ -166,7 +259,46 @@ joinGameButton.addEventListener('click', function(){
 });
 
 roundButton.addEventListener('click', function(){
-    gameRound(hero, enemy);
+    const heroAttack = document.querySelectorAll('input[name="attack"]');
+    const heroDefense = document.querySelectorAll('input[name="defense"]');
+    let attackButtonCounter = 0;
+    let defenseButtonCounter = 0;
+
+    heroAttack.forEach(item => {
+        if (item.checked) {
+            attackButtonCounter++;
+        }
+    });
+
+    heroDefense.forEach(item => {
+        if (item.checked) {
+            defenseButtonCounter++;
+        }
+    });
+    if(attackButtonCounter == 1 && defenseButtonCounter == 2) {
+        roundButton.classList.remove('animate');
+        gameRound(hero, enemy[numberForRendomEnemy]);
+    } else {
+        attackButtonCounter = 0;
+        defenseButtonCounter = 0;
+        roundButton.classList.add('animate');
+        console.log('Выберите атаку и защиту!');
+    }
 });
+
+// homeGameAttackButton.addEventListener('click', function(){
+//     let activeButton = true;
+//     const heroAttack = document.querySelectorAll('input[name="attack"]');
+//     heroAttack.forEach(item => {
+//         if (item.checked) {
+//             activeButton = false;
+//         } 
+//     });
+//     if(!activeButton){
+//         heroAttack.forEach(item => {
+//             item.disabled = true;
+//         });
+//     }
+// });
 
 startGameButton.addEventListener('click', startGame);

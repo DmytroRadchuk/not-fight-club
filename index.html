@@ -39,13 +39,23 @@
                         <button class="button start-game" id="startGame">Start Game</button>
                         <button class="button game-settings" id="gameSettings">Game Settings</button>
                     </div>
+                    <div class="home-game-result-panel">
+                        <h3 class="home-game-result-title">Game Result</h3>
+                        <div class="home-game-result-content">
+                            <p class="home-game-result-text">You fought bravely<span id="resultText"> but you lose</span></p>
+                        </div>
+                        <div class="home-game-result-scores">
+                            <p class="home-game-result-score">Your win <span id="winScore">0</span></p>
+                            <p class="home-game-result-score">Your lose: <span id="loseScore">0</span></p>
+                        </div>
+                    </div>
                     <div class="home-game-playground">
                         <div class="home-playground-header">
                              <h3 class="home-game-status">Game starting</h3>
                         </div>
                         <div class="home-game-controls">
                             <div class="home-game-attack-panel">
-                                <h4 class="home-game-attack-title">Choose your attack zone</h4>
+                                <h4 class="home-game-attack-title">Choose one attack zone</h4>
                                 <div class="home-game-attack-buttons">
                                     <label class="zone-name">
                                         <span>Head</span>
@@ -70,7 +80,7 @@
                                 </div>
                             </div>
                             <div class="home-game-defends-panel">
-                                <h4 class="home-game-defends-title">Choose your defense zone</h4>
+                                <h4 class="home-game-defends-title">Choose two defense zone</h4>
                                   <div class="home-game-defends-buttons">
                                     <label class="zone-name">
                                         <span>Head</span>
@@ -94,7 +104,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <button class="button home-game-attack-button">Attack</button>
+                            <button class="button home-game-start-button">Attack</button>
                         </div>
                     </div>
                     <div class="home-enemy-card">
