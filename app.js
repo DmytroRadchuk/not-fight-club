@@ -333,19 +333,6 @@ const enemy = [
         description: 'A powerful minotaur with balanced health and attack.',
         defenseZone: [],
         attackZones: []
-    },
-    {
-        name: 'Necromancer',
-        class: 'monster',
-        maxHealth: 70,
-        health: 70,
-        attack: 20,
-        critChance: 0.3,
-        critMultiplier: 1.6,
-        avatar: './img/enemy/necromancer.webp',
-        description: 'A dark mage who summons undead minions.',
-        defenseZone: [],
-        attackZones: []
     }
 ];
 
