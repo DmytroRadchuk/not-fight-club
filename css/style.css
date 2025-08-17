@@ -9,9 +9,9 @@
     --main-font-family: 'Cardo', serif;
 }
 
-/* body{
+body{
     overflow: hidden;
-} */
+}
 .wrapper{
     color: #E9E9E9;    
     background: linear-gradient(to right, #22222E 0%, #22222E 100%);
