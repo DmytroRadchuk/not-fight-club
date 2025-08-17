@@ -17,6 +17,7 @@ body{
     background: linear-gradient(to right, #22222E 0%, #22222E 100%);
     min-height: 100vh;
     position: relative;
+    overflow: hidden;
 }
 
 .container{
