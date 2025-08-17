@@ -148,13 +148,27 @@
 }
 .logout-button{
     background-color: var(--title-color);
-    width: 200px;
-    height: 60px;
+    width: 120px;
+    height: 40px;
     border-radius: 25px;
-    font-size: 24px;
+    font-size: 18px;
     transition: all 0.3s ease;
+    margin-left: auto;
 }
 .logout-button:hover {
+    background-color: var(--color-2);
+}
+
+.musicToggle{
+    background-color: var(--title-color);
+    width: 120px;
+    height: 40px;
+    border-radius: 25px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    margin-left: 20px;
+}
+.musicToggle:hover {
     background-color: var(--color-2);
 }
 .home-main {
@@ -171,6 +185,14 @@
     gap: 10px;
     margin-right: 40px;
     overflow: hidden;
+}
+
+@media (max-width: 1080px) {
+    .home-hero-card,
+    .home-enemy-card {
+        width: 250px;
+        height: 450px;
+    }
 }
 
 .home-enemy-card{
@@ -251,6 +273,18 @@
     left: 52%;
 }
 
+@media (max-width: 1590px) {
+    .home-game-result-panel {
+    left: 60%;
+    }  
+}
+
+@media (max-width: 1130px) {
+    .home-game-result-panel {
+    left: 65%;
+    }
+}
+
 .home-game-menu.unvisible {
     opacity: 0;
     transform: translateY(100%);
@@ -301,6 +335,7 @@
 
 .home-game-playground {
      background: linear-gradient(to top, #7a7480 0%, #554d5a 100%);
+     margin: 0 auto;
      padding: 12px 16px;
      width: 40%;
      height: 350px;
@@ -314,6 +349,11 @@
      transform: translateY(100%);
 }
 
+@media (max-width: 1230px) {
+    .home-game-playground {
+        width: 30%;
+    }
+}
 
 .home-game-playground.visible {
     opacity: 1;

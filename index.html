@@ -27,6 +27,11 @@
                 <div class="home-header">
                     <h1 class="home-title">Welcome to the Not-Fight-Club <span id="playerName">Dima</span>!</h1>
                     <button class="logout-button" id="logoutButton">Logout</button>
+                    <button  class="musicToggle" id="musicToggle">🔊 Music On</button>
+                    <audio id="bgMusic" loop>
+                        <source src="./audio/sound.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                        </audio>
                 </div>
                 <div class="home-main">
                     <div class="home-hero-card">
@@ -144,6 +149,14 @@
                     <label class="modal-hero-option">
                         <input type="radio" name="hero" value="archer">
                         <span>Archer</span>
+                    </label>
+                    <label class="modal-hero-option">
+                        <input type="radio" name="hero" value="rogue">
+                        <span>Rogue</span>
+                    </label>
+                    <label class="modal-hero-option">
+                        <input type="radio" name="hero" value="paladin">
+                        <span>Paladin</span>
                     </label>
                 </div>
                 <button id="modalSave" class="modal-save-settings">Save</button>
