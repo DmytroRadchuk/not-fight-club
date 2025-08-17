@@ -17,11 +17,26 @@ const loseScoreElement = document.getElementById('loseScore');
 const homeGameAttackButton = document.querySelector('.home-game-attack-buttons');
 let resultTextElement = document.getElementById('resultText');
 
+const modalWindow = document.querySelector('.modal');
+const modalCloseButton = document.querySelector('.modal-close');
+const modalSaveButton = document.getElementById('modalSave');
+const gameSettingsButton = document.getElementById('gameSettings');
+
 resultTextElement.textContent = '!';
 
 let winScore = 0;
 let loseScore = 0;
+let logLine = 0;
 
+function closeModalWindow() {
+    const modal = document.querySelector('.modal');
+    modal.classList.remove('open');
+}
+
+function openModalWindow() {
+    const modal = document.querySelector('.modal');
+    modal.classList.add('open');
+}
 
 
 // writing starting status to local storage
@@ -32,26 +47,70 @@ if (!myStorage.getItem('gameStatus')) {
 
 // function for render game screens
 
-const hero = {
+const heroPull = [
+    {
     name: myStorage.getItem('playerName'),
     class: 'warrior',
-    maxHealth: 100,
-    health: 100,
+    maxHealth: 120,
+    health: 120,
     attack: 20,
+    critChance: 0.2,
+    critMultiplier: 1.5,
     avatar: './img/heroes/warrior.webp',
+    description: 'A brave warrior with high health and midle attack.',
     defenseZone: []
+    },
+    {
+    name: myStorage.getItem('playerName'),
+    class: 'mage',
+    maxHealth: 70,
+    health: 70,
+    attack: 30,
+    critChance: 0.15,
+    critMultiplier: 1.8,
+    avatar: './img/heroes/mage.jpg',
+    description: 'A powerful mage with low health but high attack.',
+    defenseZone: []
+    },
+    {
+    name: myStorage.getItem('playerName'),
+    class: 'archer',
+    maxHealth: 90,
+    health: 90,
+    attack: 20,
+    critChance: 0.33,
+    critMultiplier: 2.1,
+    avatar: './img/heroes/archer.webp',
+    description: 'A skilled archer with midle health and high crit chance.',
+    defenseZone: []
+    }
+]
+
+function createHero(heroClass) {
+    const baseHero = heroPull.find(hero => hero.class === heroClass);
+
+      return {
+    ...baseHero,   
+    health: baseHero.maxHealth, 
+    defenseZone: [] 
+  };
 }
+
+let hero = createHero('warrior');
 
 const enemy = [
     {
         name: 'Spider',
         class: 'monster',
         maxHealth: 80,
-        health: 80,
-        attack: 15,
+        health: 60,
+        attack: 30,
+        critChance: 0.2,
+        critMultiplier: 1.5,
         avatar: './img/enemy/spyder.webp',
-        defenseZone: ['head', 'body'],
-        attackZones: ['head']
+        description: 'A creepy spider with low health and high attack.',
+        defenseZone: [],
+        attackZones: []
     },
     {
         name: 'Goblin',
@@ -59,9 +118,12 @@ const enemy = [
         maxHealth: 60,
         health: 60,
         attack: 30,
-        avatar: './img/enemy/goblin.png',
-        defenseZone: ['head', 'body'],
-        attackZones: ['head']
+        critChance: 0.36,
+        critMultiplier: 1.5,
+        avatar: './img/enemy/goblin.jpg',
+        description: 'A sneaky goblin with low health and high critical chance.',
+        defenseZone: [],
+        attackZones: []
     },
     {
         name: 'Ent',
@@ -69,9 +131,12 @@ const enemy = [
         maxHealth: 140,
         health: 140,
         attack: 10,
-        avatar: './img/enemy/ent.png',
-        defenseZone: ['head', 'body'],
-        attackZones: ['head']
+        critChance: 0.2,
+        critMultiplier: 1.5,
+        avatar: './img/enemy/ent.webp',
+        description: 'A giant tree monster with high health and low attack.',
+        defenseZone: [],
+        attackZones: []
     },
         {
         name: 'Slime',
@@ -79,19 +144,25 @@ const enemy = [
         maxHealth: 80,
         health: 80,
         attack: 15,
-        avatar: './img/enemy/slime.png',
-        defenseZone: ['head', 'body'],
-        attackZones: ['head']
+        critChance: 0.2,
+        critMultiplier: 1.5,
+        avatar: './img/enemy/slime.jpg',
+        description: 'A gelatinous slime with low health and moderate attack.',
+        defenseZone: [],
+        attackZones: []
     },
         {
         name: 'Dragon',
         class: 'monster',
         maxHealth: 150,
         health: 150,
-        attack: 15,
+        attack: 25,
+        critChance: 0.2,
+        critMultiplier: 1.5,
         avatar: './img/enemy/dragon.webp',
-        defenseZone: ['head', 'body'],
-        attackZones: ['head']
+        description: 'A fearsome dragon with high health and low attack.',
+        defenseZone: [],
+        attackZones: []
     }
 ]
 
@@ -122,6 +193,7 @@ function renderHero(heroData) {
         </div>
         <h2 class="home-hero-name">${heroData.name}</h2>
         <p class="home-hero-health">Health: <span>${heroData.health}</span></p>
+        <p class="home-hero-descr">${heroData.description}</p>
     `
 }
 
@@ -133,8 +205,22 @@ function renderEnemy(enemyData) {
         </div>
         <h2 class="home-enemy-name">${enemyData.name}</h2>
         <p class="home-enemy-health">Health: <span>${enemyData.health}</span></p>
-        <p class="home-enemy-descr">Has small HP, but can attack <span>two zones</span> buy one turn</p>
+        <p class="home-enemy-descr">${enemyData.description}</span> buy one turn</p>
     `
+}
+
+function calculateDamage(attacker) {
+  let damage = attacker.attack;
+
+  // случайное число от 0 до 1
+  if (Math.random() < attacker.critChance) {
+    damage = Math.floor(damage * attacker.critMultiplier);
+    addToBattleLog(`${attacker.name} наносит КРИТИЧЕСКИЙ удар на ${damage} урона!`);
+  } else {
+    addToBattleLog(`${attacker.name} наносит обычный удар на ${damage} урона.`);
+  }
+
+  return damage;
 }
 
 function getRandomElement(arr) {
@@ -153,18 +239,52 @@ function addToBattleLog(message) {
     const battleLog = document.getElementById('battleLog');
     const p = document.createElement('p');
     p.textContent = message;
+
+    // Чередование фона
+    if (logLine % 2 === 0) {
+        p.style.backgroundColor = "rgba(255, 255, 255, 0.05)";
+    } else {
+        p.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
+    }
+    logLine++;
+
+    // Цвета для разных сообщений
+    if (message.includes("КРИТИЧЕСКИЙ")) {
+        p.style.color = "orange";
+        p.style.fontWeight = "bold";
+    } else if (message.includes(hero.name)) {
+        p.style.color = "lightgreen";
+    } else if (message.includes("Враг") || message.includes("враг")) {
+        p.style.color = "red";
+    } else if (message.includes("защитился")) {
+        p.style.color = "gray";
+        p.style.fontStyle = "italic";
+    } else if (message.includes("погиб")) {
+        p.style.color = "darkred";
+        p.style.fontWeight = "bold";
+    } else {
+        p.style.color = "white"; // дефолтный цвет
+    }
+
+    p.style.padding = "2px 6px"; // немного отступа, чтобы аккуратнее смотрелось
+    p.style.margin = "0";
+
     battleLog.appendChild(p);
 
-    // автоматический скролл вниз
+    // автоскролл вниз
     battleLog.scrollTop = battleLog.scrollHeight;
 }
 
 function enemyTurn(enemy) {
     enemy.currentAttack = getRandomElement(['head', 'neck', 'body', 'belly', 'legs']);
     enemy.defenseZone = getTwoRandomElements(['head', 'neck', 'body', 'belly', 'legs']);
+}
 
-    addToBattleLog(`Враг атакует: ${enemy.currentAttack}`);
-    addToBattleLog(`Враг защищается: ${enemy.defenseZone}`);
+function attack(attacker, defender) {
+  const damage = calculateDamage(attacker);
+
+  defender.health -= damage;
+  addToBattleLog(`${defender.name} теперь имеет ${defender.health} HP`);
 }
 
 function startGame() {
@@ -215,15 +335,18 @@ function gameRound(hero, enemy) {
     enemyTurn(enemy);
 
     if (!enemy.defenseZone.includes(heroAttackValue)) {
-        enemy.health -= hero.attack;
-        addToBattleLog(`Герой попал! -${hero.attack} HP врагу`);
+        attack(hero, enemy);
     } else {
         addToBattleLog("Враг защитился от удара героя!");
     }
 
     if (!hero.defenseZone.includes(enemy.currentAttack)) {
-        hero.health -= enemy.attack;
-        addToBattleLog(`Враг попал! -${enemy.attack} HP герою`);
+        attack(enemy, hero);
+        if (hero.health <= 0) {
+            addToBattleLog("Герой погиб!");
+        } else {
+            addToBattleLog("Герой получил урон от врага!");
+        }
     } else {
         addToBattleLog("Герой защитился от удара врага!");
     }
@@ -298,20 +421,40 @@ roundButton.addEventListener('click', function(){
     }
 });
 
-// homeGameAttackButton.addEventListener('click', function(){
-//     let activeButton = true;
-//     const heroAttack = document.querySelectorAll('input[name="attack"]');
-//     heroAttack.forEach(item => {
-//         if (item.checked) {
-//             activeButton = false;
-//         } 
-//     });
-//     if(!activeButton){
-//         heroAttack.forEach(item => {
-//             item.disabled = true;
-//         });
-//     }
-// });
+gameSettingsButton.addEventListener('click', openModalWindow);
+
+modalWindow.addEventListener('click', function(event) {
+    if (event.target === modalWindow) {
+        closeModalWindow();
+    }
+});
+modalCloseButton.addEventListener('click', function() {
+    closeModalWindow();
+});
+modalSaveButton.addEventListener('click', function() {
+    const characterNameInput = document.getElementById('characterName');
+    const heroType = document.querySelectorAll('input[name="hero"]');
+    let currentHeroType = 'warrior';
+    console.log(heroType);
+    if(characterNameInput.value !== '' && characterNameInput.value !== null && characterNameInput.value.length >= 3){
+        myStorage.setItem('playerName', characterNameInput.value);
+        homepageHeronameOnTitle.textContent = myStorage.getItem('playerName');
+        renderHero(hero);
+        setTimeout(function(){
+            characterNameInput.value = '';
+        }, 1000);
+    }
+    heroType.forEach(item => {
+        if(item.checked) {
+            currentHeroType = item.value;
+        }
+    });
+    hero = createHero(currentHeroType);
+    renderHero(hero);
+    closeModalWindow();
+});
+
+
 
 
 startGameButton.addEventListener('click', startGame);

@@ -120,6 +120,36 @@
             </div>
         </section>
     </div>
+    <section class="modal">
+        <div class="modal-inner">
+            <div class="modal-header">
+                <h2 class="modal-title">Game settings</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-name-settings">
+                <label for="characterName" class="modal-label">Character Name:</label>
+                <input type="text" id="characterName" class="modal-input">
+            </div>
+            <div class="modal-hero-settings">
+                <h3 class="modal-hero-title">Choose your hero</h3>
+                <div class="modal-hero-options">
+                    <label class="modal-hero-option">
+                        <input type="radio" name="hero" value="warrior">
+                        <span>Warrior</span>
+                    </label>
+                    <label class="modal-hero-option">
+                        <input type="radio" name="hero" value="mage">
+                        <span>Mage</span>
+                    </label>
+                    <label class="modal-hero-option">
+                        <input type="radio" name="hero" value="archer">
+                        <span>Archer</span>
+                    </label>
+                </div>
+                <button id="modalSave" class="modal-save-settings">Save</button>
+            </div>
+        </div>
+    </section>
     
     <script src="./app.js"></script>
 </body>
