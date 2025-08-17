@@ -213,6 +213,7 @@
     height: 300px;
     overflow: hidden;
     background: linear-gradient(to top, #7a7480 0%, #554d5a 100%);
+    position: relative;
 }
 .hero-avatar,
 .home-enemy-img {
@@ -380,8 +381,6 @@
     align-items: center;
     text-align: center;
 }
-.home-game-attack-panel {
-}
 .home-game-attack-title {
     font-family: var(--main-font-family);
     font-size: 22px;
@@ -395,10 +394,6 @@
     gap: 12px;
 }
 
-.zone-name {
-}
-.home-game-defends-panel {
-}
 .home-game-defends-title {
     font-family: var(--main-font-family);
     font-size: 22px;
@@ -444,10 +439,6 @@
 
 .button:hover {
     background-color: var(--color-2);
-}
-.start-game {
-}
-.game-settings {
 }
 
 .battle-log {

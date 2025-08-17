@@ -96,7 +96,7 @@ const heroPull = [
         health: 70,
         attack: 30,
         critChance: 0.15,
-        critMultiplier: 1.8,
+        critMultiplier: 3.8,
         avatar: './img/heroes/mage.webp',
         description: 'A powerful mage with low health but high attack.',
         defenseZone: []
@@ -104,9 +104,9 @@ const heroPull = [
     {
         name: myStorage.getItem('playerName'),
         class: 'archer',
-        maxHealth: 90,
-        health: 90,
-        attack: 20,
+        maxHealth: 100,
+        health: 100,
+        attack: 25,
         critChance: 0.33,
         critMultiplier: 2.1,
         avatar: './img/heroes/archer.webp',
@@ -120,7 +120,7 @@ const heroPull = [
         health: 80,
         attack: 25,
         critChance: 0.4,
-        critMultiplier: 1.7,
+        critMultiplier: 2.7,
         avatar: './img/heroes/rogue.webp',
         description: 'A stealthy rogue with low health but high critical strikes.',
         defenseZone: []
@@ -128,9 +128,9 @@ const heroPull = [
     {
         name: myStorage.getItem('playerName'),
         class: 'paladin',
-        maxHealth: 110,
-        health: 110,
-        attack: 22,
+        maxHealth: 180,
+        health: 180,
+        attack: 20,
         critChance: 0.18,
         critMultiplier: 1.6,
         avatar: './img/heroes/paladin.jpg',
@@ -438,7 +438,7 @@ function addToBattleLog(message) {
         p.style.fontWeight = "bold";
     } else if (message.includes(hero.name)) {
         p.style.color = "lightgreen";
-    } else if (message.includes("Enemy") || message.includes("enemy")) {
+    } else if (message.includes("Enemy") || message.includes("enemy") || message.includes("monster")) {
         p.style.color = "red";
     } else if (message.includes("blocked")) {
         p.style.color = "gray";
@@ -467,10 +467,11 @@ function attack(attacker, defender) {
   const damage = calculateDamage(attacker);
 
   defender.health -= damage;
-  addToBattleLog(`${defender.name} now has ${defender.health} HP`);
+  addToBattleLog(`${defender.class}  ${defender.name} now has ${defender.health} HP`);
 }
 
 function startGame() {
+    document.getElementById('battleLog').innerHTML = "";
     enemyCard.classList.add('visible');
     homeGameMenu.classList.add('unvisible');
     homeGameResultPanel.classList.add('unvisible');
@@ -550,7 +551,6 @@ function gameRound(hero, enemy) {
         resultTextElement.textContent = ' and you win';
         winScoreElement.textContent = winScore;
         alert(`You defeated: ${enemy.name}! 🎉`);
-        document.getElementById('battleLog').innerHTML = "";
     }
 }
 
