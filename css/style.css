@@ -129,7 +129,7 @@
 
 
 .home-header {
-    min-height: 120px;
+    min-height: 80px;
     padding: 24px 36px;
     display: flex;
     text-transform: uppercase;
@@ -406,4 +406,20 @@
 .start-game {
 }
 .game-settings {
+}
+
+.battle-log {
+    width: 800px;
+    height: 200px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.7);
+    color: #c9a86a;
+    border: 2px solid #5c3b1e;
+    padding: 10px;
+    font-family: "Cinzel", serif;
+    font-size: 14px;
+    margin: 20px auto 0;
+}
+.battle-log p {
+    margin: 4px 0;
 }

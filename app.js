@@ -149,12 +149,22 @@ function getTwoRandomElements(arr) {
   return [first, second];
 }
 
+function addToBattleLog(message) {
+    const battleLog = document.getElementById('battleLog');
+    const p = document.createElement('p');
+    p.textContent = message;
+    battleLog.appendChild(p);
+
+    // автоматический скролл вниз
+    battleLog.scrollTop = battleLog.scrollHeight;
+}
+
 function enemyTurn(enemy) {
     enemy.currentAttack = getRandomElement(['head', 'neck', 'body', 'belly', 'legs']);
     enemy.defenseZone = getTwoRandomElements(['head', 'neck', 'body', 'belly', 'legs']);
 
-    console.log(`Враг атакует: ${enemy.currentAttack}`);
-    console.log(`Враг защищается: ${enemy.defenseZone}`);
+    addToBattleLog(`Враг атакует: ${enemy.currentAttack}`);
+    addToBattleLog(`Враг защищается: ${enemy.defenseZone}`);
 }
 
 function startGame() {
@@ -206,16 +216,16 @@ function gameRound(hero, enemy) {
 
     if (!enemy.defenseZone.includes(heroAttackValue)) {
         enemy.health -= hero.attack;
-        console.log(`Герой попал! -${hero.attack} HP врагу`);
+        addToBattleLog(`Герой попал! -${hero.attack} HP врагу`);
     } else {
-        console.log("Враг защитился от удара героя!");
+        addToBattleLog("Враг защитился от удара героя!");
     }
 
     if (!hero.defenseZone.includes(enemy.currentAttack)) {
         hero.health -= enemy.attack;
-        console.log(`Враг попал! -${enemy.attack} HP герою`);
+        addToBattleLog(`Враг попал! -${enemy.attack} HP герою`);
     } else {
-        console.log("Герой защитился от удара врага!");
+        addToBattleLog("Герой защитился от удара врага!");
     }
 
     renderEnemy(enemy);
@@ -227,12 +237,14 @@ function gameRound(hero, enemy) {
         loseScoreElement.textContent = loseScore;
         resultTextElement.textContent = ' but you lose';
         alert("Вы проиграли! 🩸");
+        document.getElementById('battleLog').innerHTML = "";
     } else if (enemy.health <= 0) {
         endGame()
         winScore++;
         resultTextElement.textContent = ' and you win';
         winScoreElement.textContent = winScore;
         alert(`Вы победили врага: ${enemy.name}! 🎉`);
+        document.getElementById('battleLog').innerHTML = "";
     }
 }
 
@@ -300,5 +312,6 @@ roundButton.addEventListener('click', function(){
 //         });
 //     }
 // });
+
 
 startGameButton.addEventListener('click', startGame);
