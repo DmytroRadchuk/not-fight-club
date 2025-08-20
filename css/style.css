@@ -9,9 +9,14 @@
     --main-font-family: 'Cardo', serif;
 }
 
-body{
+
+
+@media (min-width: 768px) {
+   body{
     overflow: hidden;
 }
+}
+
 .wrapper{
     color: #E9E9E9;    
     background: linear-gradient(to right, #22222E 0%, #22222E 100%);
@@ -59,6 +64,8 @@ body{
     margin-bottom: 140px;
 }
 
+
+
 .register-form{
     padding: 38px 32px;
     width: 460px;
@@ -87,6 +94,20 @@ body{
     color: var(--color-4);
     font-size: 1.2rem;
     margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+    .register-title {
+        font-size: 3rem;
+        margin-top: 60px;
+        margin-bottom: 100px;
+    }
+
+    .register-form {
+        padding: 28px 24px;
+        width: 90%;
+    }
+
 }
 
 .register-input:-webkit-autofill, 
@@ -157,9 +178,10 @@ body{
         justify-content: center;
         gap: 10px;
         align-items: center;
+        margin-bottom: 20px;
     }
     .home-title {
-        font-size: 20px;
+        font-size: 16px;
     }
 }
 
@@ -260,7 +282,7 @@ body{
 @media(max-width: 568px) {
     .home-hero-img-box,
     .home-enemy-img-box {
-        height: 200px;
+        height: 140px;
     }
 }
 
@@ -321,7 +343,7 @@ body{
 @media (max-width: 568px) {
     .home-enemy-descr,
     .home-hero-descr {
-        font-size: 14px;
+        font-size: 12px;
         padding: 8px 8px;
     }
 }
@@ -362,9 +384,9 @@ body{
 
 @media (max-width: 568px) {
     .home-game-menu {
-        left: 50%;
-        width: 250px;
-        height: 310px;
+        left: calc(55% - 10px);
+        width: 180px;
+        height: 265px;
         padding: 12px 8px;
     }
 
@@ -487,14 +509,22 @@ body{
 @media (max-width: 568px) {
     .home-game-playground{
         flex: 1 1 100%;
-        overflow: 5;
-        height: 240px;
+        order: 5;
+        height: 200px;
     }
     .home-playground-header {
         padding: 8px 12px;
+        margin-bottom: 8px;
     }
     .home-game-status {
         font-size: 18px;
+    }
+    .zone-name {
+        display: flex;
+        align-content: center;
+        gap: 4px;
+        color: white;
+        font-size: 12px;
     }
 }
 
@@ -565,9 +595,15 @@ body{
 
 @media (max-width: 568px) {
     .button {
-        font-size: 16px;
+        font-size: 12px;
         padding: 8px 16px;
         margin-bottom: 10px;
+    }
+
+    .home-game-attack-title,
+    .home-game-defends-title {
+        font-size: 15px;
+        margin-bottom: 6px;
     }
 }
 
