@@ -11,7 +11,7 @@
 
 
 
-@media (min-width: 768px) {
+@media (min-width: 1368px) {
    body{
     overflow: hidden;
 }
@@ -171,6 +171,21 @@
     color: var(--color-3);
 }
 
+
+@media (max-height: 980px) {
+    .home-header {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .home-title {
+        font-size: 24px;
+    }
+}
+
 @media (max-width: 568px) {
     .home-header {
         padding: 12px 16px;
@@ -240,11 +255,19 @@
     overflow: hidden;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1380px) {
     .home-hero-card,
     .home-enemy-card {
         width: 250px;
         height: 450px;
+    }
+}
+
+@media (max-height: 980px) {
+    .home-hero-card,
+    .home-enemy-card {
+        width: 250px;
+        height: 350px;
     }
 }
 
@@ -277,6 +300,13 @@
     overflow: hidden;
     background: linear-gradient(to top, #7a7480 0%, #554d5a 100%);
     position: relative;
+}
+
+@media (max-height: 980px) {
+    .home-hero-img-box,
+    .home-enemy-img-box {
+        height: 190px;
+    }
 }
 
 @media(max-width: 568px) {
@@ -379,6 +409,18 @@
 @media (max-width: 1130px) {
     .home-game-result-panel {
     left: 65%;
+    }
+}
+
+@media (max-height: 960px) {
+    .home-game-menu {
+        height: 270px;
+        padding: 12px 8px;
+    }
+
+    .home-game-result-panel{
+        height: 270px;
+
     }
 }
 
